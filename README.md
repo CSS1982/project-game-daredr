@@ -22,7 +22,7 @@ Player needs to avoid obstacles and advance because dragon throws fire. After X 
     1.2 Obstaculos llegan, número X. Si el usuario toca, muere.
     
     
-## Backlog
+## Backlog -link Trello: https://trello.com/b/gIwSav7J/dare
 
 1. Dragon Run
     1.2 Obstaculos llegan, número X. Si el usuario toca, se para Y tiempo.

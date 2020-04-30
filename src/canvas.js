@@ -67,9 +67,9 @@ const knight = {
       this.x = 0;
     }
     if (knight.jump === true){
-      this.speedY += 0.5;
+      this.speedY += 0.01;
     }
-    this.y += this.speedY + 0.5;
+    this.y += this.speedY + 0.011;
     if (this.y >= canvas.height - this.height) {
       this.y = canvas.height - this.height;
       this.jump = false;
@@ -187,7 +187,7 @@ function updateEnemies() {
     var y = canvas.height - 64;
     var x = canvas.width + 100;
     myEnemies.push(
-      new Enemy(64, 64, x, y));
+      new Enemy(60, 60, x, y));
   }
 }
 
@@ -231,7 +231,7 @@ function sound(src) {
 function startGame() {
   forest.inicialize();
   knight.inicialize();
-  myMusic = new sound("snd/2019-10-06_-_Villainous_-_David_Fesliyan.mp3");
+  myMusic = new sound("snd/15_Ornstein & Smough.mp3");
   myMusic.play();
 }
 

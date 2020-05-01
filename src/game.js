@@ -14,7 +14,7 @@ class Level {
         this.height = 0;
     }
 
-
+//Math.random() > 0.97
 
     startLoop() {
         this.knight = new Knight(this.canvas, 1);
@@ -22,10 +22,10 @@ class Level {
         this.knight.inicialize();
 
         const loop = () => {
-            if (Math.random() > 0.97) {
-                var y = this.canvas.height - 64;
-                var x = this.canvas.width + 100;
-                this.enemies.push(new Enemy(60, 60, x, y,this.canvas));
+            if (this.enemies.length === 0) {
+                var y = this.canvas.height - 100;
+                var x = this.canvas.width + 80;
+                this.enemies.push(new Enemy(80, 100, x, y,this.canvas));
             }
             
             this.update();
@@ -69,19 +69,15 @@ class Level {
     updateEnemies() {
         for (let i = 0; i < this.enemies.length; i++) {
             this.enemies[i].x -= 1;
-            if (this.knight.attack && this.knight.kill(this.enemies[i])){
-                this.enemies.splice(i,1);
+            if (this.knight.attack && this.knight.kill(this.enemies[0])){
+                this.enemies.splice(0,1);
                 console.log("killed");
                 this.knight.points++;
             }else {
                 this.enemies[i].update();
             } 
         }
-        if (Math.random() > 0.9999999999) {
-            var y = this.canvas.height - 64;
-            var x = this.canvas.width + 100;
-            this.enemies.push(new Enemy(60, 60, x, y, this.canvas));
-        }
+        console.log(this.enemies.length);
     }
 
    checkAllCollisions() {

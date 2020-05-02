@@ -5,137 +5,172 @@ class Knight {
     this.ctx = this.canvas.getContext("2d");
     this.x = 0;
     this.y = 0;
-    this.width = 0;
-    this.height = 0;
+    this.widthIdle = 0;
+    this.widthRun = 0;
+    this.widthAttack = 0;
+    this.height = 500;
     this.speedX = 0;
     this.speedY = 0;
     this.armorLevel = armorLevel;
     this.jump = false;
-    this.img = null;
+    this.imgIdle = null;
+    this.imgRunRight = null;
     this.points = 0;
     this.attack = false;
-    this.totalNumberOfFrames = 11; // ten images in the image (see the url above)
+    this.totalNumberOfFramesIdle = 11; // ten images in the image (see the url above)
+    this.totalNumberOfFramesRun = 8;
+    this.totalNumberOfFramesAttack = 6;
     this.imageFrameNumber = 0; // This is changed to make the sprite animate  
+    this.widthOfImageIdle = 0;
+    this.widthOfImageRun = 0;
+    this.widthOfImageAttack = 0;
+    this.widthOfUnitIdle = 0;
+    this.widthOfUnitRun = 0;
+    this.widthOfUnitAttack = 0;
+    this.heightOfImageIdle = 0;
+    this.heightOfImageRun = 0;
+    this.heightOfUnitAttack = 0;
   }
 
   inicialize() {
-    
-    this.img = new Image();
-    this.img.src = "img/Idle.png";
+
+    this.imgIdle = new Image();
+    this.imgIdle.src = "img/Idle.png";
+    this.widthOfImageIdle = 1540; // find the width of the image
+    this.heightOfImageIdle = 85; // find the height of the image
+    this.widthOfUnitIdle = (this.widthOfImageIdle / this.totalNumberOfFramesIdle); // The width of each image in the spirite
+    this.widthIdle = this.widthOfUnitIdle * this.height / this.heightOfImageIdle;
+    this.x = -0.25 * this.widthIdle;
+    this.y = this.canvas.height - this.height;
+    this.imgIdle.onload = () => this.ctx.drawImage(this.imgIdle, this.imageFrameNumber * this.widthOfUnitIdle, 0, // x and y - where in the sprite
+      this.widthOfUnitIdle, this.heightOfImageIdle, // width and height
+      this.x, this.y, // x and y - where on the screen
+      this.widthIdle, this.height // width and height
+    );
+
+    this.imgRunRight = new Image();
+    this.imgRunRight.src = "img/Run.png";
+    this.widthOfImageRun = 1120; // find the width of the image
+    this.heightOfImageRun = 85; // find the height of the image
+    this.widthOfUnitRun = (this.widthOfImageRun / this.totalNumberOfFramesRun); // The width of each image in the spirite
+    this.widthRun = this.widthOfUnitRun * this.height / this.heightOfImageRun;
+
+    this.imgAttack = new Image();
+    this.imgAttack.src = "img/Attack.png";
+    this.widthOfImageAttack = 840; // find the width of the image
+    this.heightOfImageAttack = 85; // find the height of the image
+    this.widthOfUnitAttack = (this.widthOfImageAttack / this.totalNumberOfFramesAttack); // The width of each image in the spirite
+    this.widthAttack = this.widthOfUnitAttack * this.height / this.heightOfImageAttack;
+
+  }
 
 
-      var widthOfImage = 1540; // find the width of the image
-      this.height = 85/1540 * widthOfImage; // find the height of the image
-      this.y = this.canvas.height - 150;
-      this.width = (widthOfImage / this.totalNumberOfFrames); // The width of each image in the spirite
-      
-      this.img.onload = () =>this.ctx.drawImage(this.img, this.imageFrameNumber * this.width, 0, // x and y - where in the sprite
-        this.width, this.height, // width and height
-        this.x, this.y, // x and y - where on the screen
-        100, 150// width and height
-      );
+  newPos() {
 
-      /*this.width = 200;
-      this.height = (80 / 94) * this.width;
-      this.x = 0;
+    if (this.jump) {
+      this.speedY -= 150;
+      this.jump = false;
+    }
+    this.speedY += 2;
+    this.x += this.speedX;
+    this.y += this.speedY;
+    this.speedX *= 0.95;
+    this.speedY *= 0.8;
+
+    if (this.y >= this.canvas.height - this.height) {
       this.y = this.canvas.height - this.height;
-      this.img = new Image();
-      this.img.onload = () => this.ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
-      this.img.src = 'img/spellun-sprite.png';*/
-    
+    }
+    if (this.x >= this.canvas.width - this.widthIdle) {
+      this.x = this.canvas.width - this.widthIdle;
+    }
+    if (this.x <= -0.25 * this.widthIdle) {
+      this.x = -0.25 * this.widthIdle;
+    }
+
+
   }
 
+  left() {
+    return this.x;
+  }
 
-    newPos() {
-      this.x += this.speedX;
-      if (this.x >= this.canvas.width - this.width) {
-        this.x = this.canvas.width - this.width;
-      }
-      if (this.x <= 0) {
-        this.x = 0;
-      }
-      if (this.jump === true) {
-        this.speedY += 0.01;
-      }
-      this.y += this.speedY + 0.011;
-      if (this.y >= this.canvas.height - 150) {
-        this.y = this.canvas.height - 150;
-        this.jump = false;
-      } else if (this.y <= this.canvas.height - 2 * this.height) {
-        this.y = this.canvas.height - 2 * this.height;
-        this.jump = true;
-      } else {
-        this.jump = true;
-      }
+  right() {
+    if (this.speedX === 0) {
+      return this.x + 3 * this.widthIdle / 4;
+    } else {
+      return this.x + 3 * this.widthRun / 4;
     }
+  }
 
-    left() {
-      return this.x;
-    }
+  top() {
+    return this.y;
+  }
 
-    right() {
-      return this.x + this.width;
-    }
+  bottom() {
+    return this.y + this.height;
+  }
 
-    top() {
-      return this.y;
-    }
-
-    bottom() {
-      return this.y + this.height;
-    }
-
-    update() {
-      //this.ctx.drawImage(this.img, this.x, this.y, 120, 80 / 94 * this.width);
-      this.imageFrameNumber++;
-      this.imageFrameNumber = this.imageFrameNumber % this.totalNumberOfFrames;
-      this.ctx.drawImage(this.img, this.imageFrameNumber * this.width, 0, // x and y - where in the sprite
-        this.width, this.height, // width and height
+  update() {
+    this.imageFrameNumber++;
+    //this.ctx.drawImage(this.img, this.x, this.y, 120, 80 / 94 * this.width);
+    if (this.speedX < 3 && !this.attack) {
+      this.imageFrameNumber = this.imageFrameNumber % this.totalNumberOfFramesIdle;
+      this.ctx.drawImage(this.imgIdle, this.imageFrameNumber * this.widthOfUnitIdle, 0, // x and y - where in the sprite
+        this.widthOfUnitIdle, this.heightOfImageIdle, // width and height
         this.x, this.y, // x and y - where on the screen
-        100,150 // width and height
+        this.widthIdle, this.height // width and height
       );
     }
-
-    score() {
-      this.ctx.font = "24px bold Verdana";
-      this.ctx.fillStyle = "red";
-      this.ctx.fillText("Score: " + this.points, this.canvas.width - 200, 50);
-    }
-
-    /*crashWith(enemy) {
-      return !(
-        this.bottom() < enemy.top() ||
-        this.top() > enemy.bottom() ||
-        this.right() < enemy.left() ||
-        this.left() > enemy.right()
-      );
-    }*/
-
-    checkCollisionEnemy(enemy) {
-      return !(
-        this.bottom() < enemy.top() - 1 ||
-        this.top() > enemy.bottom() + 1 ||
-        this.right() < enemy.left() - 1 ||
-        this.left() > enemy.right() + 1
+    if (this.speedX > 3) {
+      this.imageFrameNumber = this.imageFrameNumber % this.totalNumberOfFramesRun;
+      this.ctx.drawImage(this.imgRunRight, this.imageFrameNumber * this.widthOfUnitRun, 0, // x and y - where in the sprite
+        this.widthOfUnitRun, this.heightOfImageRun, // width and height
+        this.x, this.y, // x and y - where on the screen
+        this.widthRun, this.height // width and height
       );
     }
-
-
-    kill(enemy) {
-      if (this.attack) {
-        console.log("kill");
-        console.log(this.x + this.width);
-        console.log(enemy.left());
-        this.attack = false;
-        return (this.x + this.width + 10 > enemy.left());
-      }
+    if (this.speedX === 0 && this.attack) {
+      this.imageFrameNumber = this.imageFrameNumber % this.totalNumberOfFramesAttack;
+      this.ctx.drawImage(this.imgAttack, this.imageFrameNumber * this.widthOfUnitAttack, 0, // x and y - where in the sprite
+        this.widthOfUnitAttack, this.heightOfImageAttack, // width and height
+        this.x, this.y, // x and y - where on the screen
+        this.widthAttack, this.height // width and height
+      );
     }
+  }
 
-    loseArmor() {
-      if (this.armorLevel > 0) {
-        this.armorLevel--;
-      }
+  score() {
+    this.ctx.font = "100px Creepster";
+    this.ctx.fillStyle = "red";
+    this.ctx.fillText("Kills: " + this.points, this.canvas.width - 500, 100);
+  }
 
+  checkCollisionEnemy(enemy) {
+    /*console.log(this.right());
+    console.log(enemy.left());*/
+    return !(
+      this.bottom() < enemy.top() - 1 ||
+      this.top() > enemy.bottom() + 1 ||
+      this.right() < enemy.left() - 1 ||
+      this.left() > enemy.right() + 1
+    );
+  }
+
+
+  kill(enemy) {
+    if (this.attack) {
+      /* console.log("kill");
+       console.log(this.x + this.widthIdle);
+       console.log(enemy.left());*/
+      return (this.right() > enemy.x && this.left() < enemy.left());
+    }
+  }
+
+  loseArmor() {
+    if (this.armorLevel > 0) {
+      this.armorLevel--;
     }
 
   }
+
+}

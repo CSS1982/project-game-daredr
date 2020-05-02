@@ -8,7 +8,7 @@ class Level {
         this.enemies = [];
         this.isGameOver = false;
         this.img = null;
-        this.x = 0;
+        this.x = 200;
         this.y = 0;
         this.width = 0;
         this.height = 0;
@@ -25,7 +25,7 @@ class Level {
             if (this.enemies.length === 0) {
                 var y = this.canvas.height - 100;
                 var x = this.canvas.width + 80;
-                this.enemies.push(new Enemy(80, 100, x, y,this.canvas));
+                this.enemies.push(new Enemy(64*400/64, 400, x, y,this.canvas,this.knight));
             }
             
             this.update();
@@ -60,7 +60,7 @@ class Level {
         this.ctx.drawImage(this.img, this.x, 0, this.width, this.height);
         //ctx.drawImage(this.img, this.x - this.img.width, 0, this.width, this.height);
         this.ctx.drawImage(this.img, this.x - this.width, 0, this.width, this.height);
-        this.x -= 0.5;
+        this.x -= this.knight.speedX;
         if (this.x <= 0) {
             this.x = this.img.width;
         }
@@ -77,7 +77,7 @@ class Level {
                 this.enemies[i].update();
             } 
         }
-        console.log(this.enemies.length);
+        //console.log(this.enemies.length);
     }
 
    checkAllCollisions() {

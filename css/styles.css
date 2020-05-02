@@ -15,7 +15,7 @@ body {
   width: 100vw;
   height: 90vh;
   margin: 0;
-  background-image: url("/home/claudi/Ironhack/labs/project-game-daredr/img/background-forest.jpg");
+  background-image: url("https://raw.githubusercontent.com/CSS1982/project-game-daredr/master/img/background-forest.jpg");
   background-repeat: no-repeat;
   background-attachment: fixed;
   background-position: center;

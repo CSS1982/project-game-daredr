@@ -22,7 +22,7 @@ class Level {
         this.knight.inicialize();
 
         const loop = () => {
-            if (this.enemies.length === 0) {
+            if (Math.random()>0.987) {
                 var y = this.canvas.height - 100;
                 var x = this.canvas.width + 80;
                 this.enemies.push(new Enemy(64*400/64, 400, x, y,this.canvas,this.knight));
@@ -60,7 +60,8 @@ class Level {
         this.ctx.drawImage(this.img, this.x, 0, this.width, this.height);
         //ctx.drawImage(this.img, this.x - this.img.width, 0, this.width, this.height);
         this.ctx.drawImage(this.img, this.x - this.width, 0, this.width, this.height);
-        this.x -= this.knight.speedX;
+        this.x -= this.knight.speedX +0.5;
+        console.log(this.x);
         if (this.x <= 0) {
             this.x = this.img.width;
         }

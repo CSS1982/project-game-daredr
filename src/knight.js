@@ -80,8 +80,8 @@ class Knight {
     if (this.y >= this.canvas.height - this.height) {
       this.y = this.canvas.height - this.height;
     }
-    if (this.x >= this.canvas.width - this.widthIdle) {
-      this.x = this.canvas.width - this.widthIdle;
+    if (this.x >= this.canvas.width/2 - this.widthIdle) {
+      this.x = this.canvas.width/2 - this.widthIdle;
     }
     if (this.x <= -0.25 * this.widthIdle) {
       this.x = -0.25 * this.widthIdle;
@@ -143,6 +143,7 @@ class Knight {
     this.ctx.font = "100px Creepster";
     this.ctx.fillStyle = "red";
     this.ctx.fillText("Kills: " + this.points, this.canvas.width - 500, 100);
+    this.ctx.fillText("Armor: " + this.armorLevel, this.canvas.width - 500, 210);
   }
 
   checkCollisionEnemy(enemy) {

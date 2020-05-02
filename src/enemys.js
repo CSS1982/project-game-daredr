@@ -8,7 +8,7 @@ class Enemy {
         this.height = height;
         this.x = x;
         this.y = y;
-        this.speedX = -1;
+        this.speedX = -3;
         this.speedY = 0;
         this.img = new Image();
         this.img.onload = () => this.ctx.drawImage(this.img, this.x, this.y - this.height*0.7, this.width, this.height);

@@ -1,5 +1,3 @@
-
-
 class Level {
     constructor(canvas) {
         this.canvas = canvas;
@@ -14,29 +12,31 @@ class Level {
         this.height = 0;
     }
 
-//Math.random() > 0.97
+    //Math.random() > 0.97
 
     startLoop() {
-        this.knight = new Knight(this.canvas, 1);
+        this.knight = new Knight(this.canvas, 100);
         this.inicialize();
         this.knight.inicialize();
 
         const loop = () => {
-            if (Math.random()>0.987) {
-                var y = this.canvas.height - 100;
-                var x = this.canvas.width + 80;
-                this.enemies.push(new Enemy(64*400/64, 400, x, y,this.canvas,this.knight));
+            if (this.enemies.length === 0) {
+                //var y = this.canvas.height - 100;
+                this.enemies.push(new Enemy(this.canvas, this.knight));
+                this.enemies[this.enemies.length - 1].inicialize();
             }
-            
+            //console.log("oups");
+
             this.update();
             this.knight.newPos();
             this.knight.update();
             this.knight.score();
             this.updateEnemies();
+            //console.log("end oups");
             this.checkAllCollisions();
             if (!this.isGameOver) {
                 window.requestAnimationFrame(loop);
-              }
+            }
 
         };
 
@@ -60,8 +60,7 @@ class Level {
         this.ctx.drawImage(this.img, this.x, 0, this.width, this.height);
         //ctx.drawImage(this.img, this.x - this.img.width, 0, this.width, this.height);
         this.ctx.drawImage(this.img, this.x - this.width, 0, this.width, this.height);
-        this.x -= this.knight.speedX +0.5;
-        console.log(this.x);
+        this.x -= this.knight.speedX;
         if (this.x <= 0) {
             this.x = this.img.width;
         }
@@ -69,42 +68,54 @@ class Level {
 
     updateEnemies() {
         for (let i = 0; i < this.enemies.length; i++) {
-            this.enemies[i].x -= 1;
-            if (this.knight.attack && this.knight.kill(this.enemies[0])){
-                this.enemies.splice(0,1);
-                console.log("killed");
+            if (this.enemies[i].x > 0.55 * this.canvas.width) {
+                this.enemies[i].x -= 1;
+            } else {
+                this.enemies[i].x -= 0;
+            }
+            //this.enemies[i].x -= 1;
+            if (this.knight.attack && this.knight.kill(this.enemies[0])) {
+                console.log("i am in");
+                console.log(this.knight.kill(this.enemies[0]));
+                this.enemies.splice(0, 1);
                 this.knight.points++;
-            }else {
+            } else {
                 this.enemies[i].update();
-            } 
+            }
         }
         //console.log(this.enemies.length);
     }
 
-   checkAllCollisions() {
-        this.enemies.forEach((enemy, index) => {
-          if (this.knight.checkCollisionEnemy(enemy)) {
-            this.knight.loseArmor();
-            console.log(this.knight.armorLevel);
-            if (this.knight.armorLevel === 0) {
-                console.log("dead");
-              this.isGameOver = true;
-              this.onGameOver();
+
+    checkAllCollisions() {
+        this.enemies.some((enemy, index) => {
+            if (enemy.kill()) {
+                this.knight.loseArmor();
             }
-          }
+            /*switch (this.knight.checkCollisionEnemy(enemy)) {
+                case "bottom":
+                    this.knight.y = enemy.top() + this.knight.height;
+                    break;
+                case "top":
+                    this.knight.y = enemy.bottom();
+                    break;
+                case "left":
+                    this.knight.x = enemy.left();
+                    console.log("case:left");
+                    break;
+                case "right":
+                    this.knight.x = enemy.right() - this.knight.height;
+                    break;
+            }*/
+            if (this.knight.armorLevel === 0) {
+
+                this.isGameOver = true;
+                this.onGameOver();
+            }
         });
-      }
-    
-      gameOverCallback(callback) {
+    }
+
+    gameOverCallback(callback) {
         this.onGameOver = callback;
+    }
 }
-}
-
-
-
-
-
-
-
-
-

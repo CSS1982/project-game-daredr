@@ -16,4 +16,18 @@ class Disciple extends Enemy {
                 return 0;
             }
         }
+
+        kill() {
+            if (this.knight.right() > this.left() && this.knight.right() < this.right()) {
+                if( Math.floor(Math.random() * 100) > 90){
+                    return this.strength;
+                }else{
+                    return 0;
+                }
+            }else{
+                return 0;
+            }
+          
+        }
     }
+

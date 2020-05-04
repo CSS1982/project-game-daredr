@@ -12,8 +12,9 @@ class Fireball extends Enemy {
     kill() {
         if (this.x < this.knight.x * 1.20 && this.knight.y === this.knight.height) {
             if (Math.floor(Math.random() * 100) > 60) {
-                return this.strength;
                 this.health--;
+                return this.strength;
+                
             } else {
                 return 0;
             }

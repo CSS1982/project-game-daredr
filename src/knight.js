@@ -4,7 +4,9 @@ class Knight {
     this.canvas = canvas;
     this.ctx = this.canvas.getContext("2d");
     this.height = 500;
-    this.armorLevel = armorLevel;
+    this.width = 0;
+    this.armorLevelStart = armorLevel;
+    this.armorLevel = this.armorLevelStart;
     this.x = 0;
     this.y = this.height;
     this.speedX = 0;
@@ -12,44 +14,56 @@ class Knight {
     this.points = 0;
     this.attack = false;
     this.jump = false;
-
+    this.direction = "right";
+    this.type = "knight";
     this.imgIdle = null;
     this.imgRun = null;
     this.imgAttack = null;
+    this.row = 0;
   }
 
   inicialize() {
 
-    this.imgIdle = new imageG(this.ctx,"img/Idle.png", 1540, 85,this.height, 11);
+    this.imgIdle = new imageG(this.ctx, "img/Idle.png", 1540, 85, this.height, 11, 1, this.row);
     this.imgIdle.inicialize();
-    this.x = this.imgIdle.width/2;
-    this.imgIdle.update(this.x - this.imgIdle.width/2,this.y);
+    this.x = this.imgIdle.width / 2;
+    this.width = this.imgIdle.width;
+    this.imgIdle.update(this.x - this.imgIdle.width / 2, this.y, this.type);
 
-    this.imgRun = new imageG(this.ctx,"img/Run.png", 1120, 85,this.height, 8);
+    this.imgRun = new imageG(this.ctx, "img/Run.png", 1120, 85, this.height, 8, 1, this.row);
     this.imgRun.inicialize();
 
-    this.imgAttack = new imageG(this.ctx,"img/Attack.png", 840, 85,this.height, 6);
+    this.imgAttack = new imageG(this.ctx, "img/Attack.png", 840, 85, this.height, 6, 1, this.row);
     this.imgAttack.inicialize();
   }
 
 
-  newPos() {
+  newPos(enemies) {
 
     if (this.jump) {
-      this.speedY += 120 * -1;
+      this.speedY += 150 * -1;
       this.jump = false;
     }
     this.speedY += 2;
+    if (this.speedX > 12) {
+      this.speedX = 12;
+    }
     this.x += this.speedX;
-    console.log(`the value of x is ${this.x}`);
     this.y += this.speedY;
     this.speedX *= 0.95;
     this.speedY *= 0.8;
 
+    enemies.forEach(enemy => {
+      if (this.right() > enemy.left() && this.bottom() > enemy.top() && this.right() < enemy.x + 100) {
+        this.x = enemy.left();
+      }
+
+    });
+
     if (this.y >= this.canvas.height - this.height) {
       this.y = this.canvas.height - this.height;
     }
-    if (this.y < this.canvas.height - 3 * this.height) {
+    if (this.y < this.canvas.height - 2 * this.height) {
       this.y = this.canvas.height - 2 * this.height;
     }
     if (this.x >= this.canvas.width / 2 - this.imgIdle.width / 4) {
@@ -63,20 +77,14 @@ class Knight {
   }
 
   left() {
-    if (this.speedX === 0) {
-      return this.x - 3 * this.widthIdle / 4;
-    } else {
-      return this.x - 3 * this.widthRun / 4;
-    }
+    return this.x - this.width / 4;
   }
 
+
   right() {
-    if (this.speedX === 0) {
-      return this.x + 3 * this.widthIdle / 4;
-    } else {
-      return this.x + 3 * this.widthRun / 4;
-    }
+    return this.x + this.width / 4;
   }
+
 
   top() {
     return this.y;
@@ -89,35 +97,35 @@ class Knight {
   update() {
 
     if (this.speedX < 3 && !this.attack) {
-      this.imgIdle.update(this.x - this.imgIdle.width/2,this.y);
+      this.imgIdle.update(this.x - this.imgIdle.width / 2, this.y, this.direction, this.type);
     }
     if (this.speedX > 3) {
-      this.imgRun.update(this.x - this.imgIdle.width/2,this.y);
+      this.imgRun.update(this.x - this.imgIdle.width / 2, this.y, this.direction, this.type);
 
     }
     if (this.speedX === 0 && this.attack) {
-      this.imgAttack.update(this.x - this.imgIdle.width/2,this.y);
+      this.imgAttack.update(this.x - this.imgIdle.width / 2, this.y, this.direction, this.type);
     }
 
   }
 
-  score() {
-    this.ctx.font = "100px Creepster";
+  status() {
+    this.ctx.font = "50px Creepster";
     this.ctx.fillStyle = "red";
-    this.ctx.fillText("Kills: " + this.points, this.canvas.width - 500, 100);
-    this.ctx.fillText("Armor: " + this.armorLevel, this.canvas.width - 500, 210);
+    this.ctx.fillText("Kills: " + this.points, this.canvas.width - 400, 50);
+    this.ctx.fillText("H: ", this.canvas.width - 400, 100);
+    this.ctx.fillRect(this.canvas.width - 350, 80, this.armorLevel * 150 / this.armorLevelStart, 20);
+
   }
 
   checkCollisionEnemy(enemy) {
-    console.log(this.right());
-    console.log(enemy.left());
-    if ((this.bottom() < enemy.top() - 1)){
+    if ((this.bottom() < enemy.top() - 1)) {
       return "bottom";
-    }else if ((this.top() > enemy.bottom() + 1 )){
+    } else if ((this.top() > enemy.bottom() + 1)) {
       return "top";
-    }else if ((this.right() < enemy.left() - 1)){
+    } else if ((this.right() < enemy.left() - 1)) {
       return "right";
-    }else if ((this.left() > enemy.right() + 1)){
+    } else if ((this.left() > enemy.right() + 1)) {
       return "left";
     }
     return !(
@@ -129,18 +137,29 @@ class Knight {
   }
 
 
-  kill(enemy) {
+  attackEnemy() {
     if (this.attack) {
-       console.log("kill");
-       console.log(this.x + this.imgIdle.width);
-       console.log(enemy.left());
-      return (this.right() > enemy.x && this.left() < enemy.left());
+      var attackValue = Math.floor(Math.random() * 20);
+      if (attackValue < 5) {
+        return 0;
+      } else if (attackValue < 12) {
+        return 2;
+      } else if (attackValue < 15) {
+        return 4;
+      } else if (attackValue < 18) {
+        return 5;
+      } else {
+        return 10;
+      }
+
     }
   }
 
-  loseArmor() {
+
+
+  loseArmor(damage) {
     if (this.armorLevel > 0) {
-      this.armorLevel--;
+      this.armorLevel -= damage;
     }
 
   }

@@ -61,26 +61,29 @@ const main = () => {
         canvasElement.setAttribute('width', width);
         canvasElement.setAttribute('height', height);
 
-        const level = new Level(canvasElement);
+        const game = new Game(canvasElement);
 
-        level.gameOverCallback(buildGameOver);
+        game.gameOverCallback(buildGameOver);
+        game.gameFinishedCallback(buildGameFinished);
 
-        level.startLoop();
+        game.startLoop();
 
         const setPlayerDirection = (e) => {
             switch (e.which) {
                 case 65: // left arrow-a
-                    level.knight.speedX -= 1;
+                    game.knight.speedX -= 2;
+                    game.knight.direction = "left";
                     break;
                 case 68: // right arrow -d
-                    level.knight.speedX += 2;
+                    game.knight.speedX += 2;
+                    game.knight.direction = "right";
                     break;
                 case 87: // up arrow-w
-                level.knight.jump = true;
+                game.knight.jump = true;
                     break;
                 case 75: // k
-                    level.knight.speedX = 0;
-                    level.knight.attack = true;
+                    game.knight.speedX = 0;
+                    game.knight.attack = true;
                     break;
             }
 
@@ -89,7 +92,7 @@ const main = () => {
         document.addEventListener('keydown', setPlayerDirection);
 
         document.onkeyup = function (e) {
-            level.knight.attack = false;
+            game.knight.attack = false;
         };
 
     };
@@ -101,6 +104,28 @@ const main = () => {
             <img id ="logo"
               src="img/You died!.png"
               alt="You died image"
+              class="game-logo w3-animate-fading"
+            />
+          </div>
+          <div>
+            <button class="w3-animate-fading game-button">RESTART GAME</button>
+          </div>
+            </section>
+        `);
+
+        const restartButton = document.querySelector('button');
+        restartButton.setAttribute('id', "restart-game-button");
+
+        restartButton.addEventListener('click', buildGameScreen);
+    };
+
+    const buildGameFinished = () => {
+        buildDom(`
+            <section class="splash-screen">
+            <div>
+            <img id ="logo"
+              src="img/You survived!.png"
+              alt="You survived! image"
               class="game-logo w3-animate-fading"
             />
           </div>

@@ -1,35 +1,47 @@
 class imageG {
-    constructor(ctx,source, imageWidth, imageHeight,height, totalNumberOfFrames) {
+    constructor(ctx,source, imageWidth, imageHeight,height, totalNumberOfFrames, numberOfRows, row) {
         this.ctx = ctx;
         this.width = 0;
         this.height = height;
+        this.numberOfRows = numberOfRows;
         this.img = null;
         this.totalNumberOfFrames = totalNumberOfFrames;
         this.imageFrameNumber = 0;
         this.widthOfImage = imageWidth;
         this.heightOfImage =  imageHeight;
         this.widthOfUnit = 0;
+        this.heighOfUnit = 0;
         this.src = source;
         this.x=0;
         this.y=0;
+        this.row = row;
     }
     inicialize() {
     this.img = new Image();
     this.img.src = this.src;
     this.widthOfUnit= (this.widthOfImage / this.totalNumberOfFrames); // The width of each image in the spirite
-    this.width = this.widthOfUnit * this.height / this.heightOfImage;
+    this.heightOfUnit= (this.heightOfImage / this.numberOfRows); // The width of each image in the spirite
+    this.width = this.widthOfUnit * this.height / this.heightOfUnit;
     }
-    update(x,y) {
+    update(x,y,direction,type) {
         this.imageFrameNumber++;
         this.x = x;
-        console.log(`the value of x drawn is ${this.x}`);
-        /*if(this.x <= -0.25*this.width){
-            this.x = -0.25*this.width;
-        }*/
         this.y = y;
         this.imageFrameNumber = this.imageFrameNumber % this.totalNumberOfFrames;
-        this.ctx.drawImage(this.img, this.imageFrameNumber * this.widthOfUnit, 0, // x and y - where in the sprite
-        this.widthOfUnit, this.heightOfImage, // width and height
+        /*console.log(direction);
+        if (direction === "left" && type === "knight"){
+            console.log("reverse");
+            this.ctx.save();
+            this.ctx.scale(-1,1);
+            this.ctx.drawImage(this.img, this.imageFrameNumber * this.widthOfUnit, this.heightOfUnit*this.row, // x and y - where in the sprite
+                this.widthOfUnit, this.heightOfUnit, // width and height
+                this.x, this.y, // x and y - where on the screen
+                this.width, this.height // width and height
+              ); 
+              this.ctx.restore();
+        }*/
+        this.ctx.drawImage(this.img, this.imageFrameNumber * this.widthOfUnit, this.heightOfUnit*this.row, // x and y - where in the sprite
+        this.widthOfUnit, this.heightOfUnit, // width and height
         this.x, this.y, // x and y - where on the screen
         this.width, this.height // width and height
       );}

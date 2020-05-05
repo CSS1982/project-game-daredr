@@ -11,7 +11,7 @@ class Game {
         this.y = 0;
         this.width = 0;
         this.height = 0;
-        this.encounter = 5;
+        this.encounter = 10;
         this.frames = 0;
         this.fireballs = [];
         this.mode = undefined; //Possible values: "easy", "medium", "hard", "endless"
@@ -142,12 +142,11 @@ class Game {
     }
 
     checkAllAttacks() {
-        this.enemies.some((enemy, index) => {
+        this.enemies.some((enemy) => {
             if (enemy.type === "disciple") {
                 if (enemy.summonFireball()) {
                     if (this.fireballs.length <= 2) {
-                        console.log("in");
-                        this.fireballs.push(new Fireball(this.canvas, this.knight, enemy.x, enemy.y));
+                        this.fireballs.push(new Fireball(this.canvas, this.knight, enemy.x));
                         this.fireballs[this.fireballs.length - 1].inicialize();
                     }
                 }
@@ -158,7 +157,7 @@ class Game {
                 this.onGameOver();
             }
         });
-        this.fireballs.some((fireball, index) => {
+        this.fireballs.some((fireball) => {
             this.knight.loseArmor(fireball.kill());
             if (this.knight.armorLevel <= 0) {
                 this.isGameOver = true;

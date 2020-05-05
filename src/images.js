@@ -24,9 +24,7 @@ class imageG {
     this.heightOfUnit= (this.heightOfImage / this.numberOfRows); // The width of each image in the spirite
     this.width = this.widthOfUnit * this.height / this.heightOfUnit;
     }
-    update(x,y,direction,type) {
-       
-        this.imageFrameNumber++;
+    update(x,y) {
 
         this.x = x;
         this.y = y;
@@ -36,8 +34,8 @@ class imageG {
         this.x, this.y, // x and y - where on the screen
         this.width, this.height // width and height
       );
-
+      this.imageFrameNumber++;
+ 
         }
-
-
+        
 }

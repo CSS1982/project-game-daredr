@@ -1,6 +1,6 @@
 //Clase para generar los enemigos
 class Enemy {
-    constructor(canvas, knight, type, source, totalNumberOfFrames, numberofRows, row, imageWidth, imageHeight, height, health, strength, x, y) {
+    constructor(canvas, knight, type, source, totalNumberOfFrames, numberofRows, row, imageWidth, imageHeight, height, health, strength, x, y, animationSpeed) {
         this.canvas = canvas;
         this.knight = knight;
         this.ctx = this.canvas.getContext("2d");
@@ -23,6 +23,8 @@ class Enemy {
         this.health = health;
         this.strength = strength;
         this.type = type;
+        this.animationSpeed = animationSpeed;
+        this.updateCounter = 0;
     }
 
     inicialize() {
@@ -31,7 +33,7 @@ class Enemy {
         this.width = this.widthOfUnit * this.height / this.heightOfImage;
         this.img = new imageG(this.ctx, this.source, this.imageWidth, this.imageHeight, this.height, this.totalNumberOfFrames, this.numberOfRows, this.row);
         this.img.inicialize();
-        if (this.x === undefined){
+        if (this.x === undefined) {
             this.x = this.img.width / 2 + this.canvas.width;
         }
         this.y = this.canvas.height - this.img.height;
@@ -41,10 +43,14 @@ class Enemy {
     }
 
     update() {
+
         if (this.knight.right() > this.x && this.knight.left() < this.left()) {
             this.speedX = 0;
         }
-        this.img.update(this.x - this.img.width / 2, this.y, this.direction, this.type);
+        if (this.updateCounter % this.animationSpeed) {
+            this.img.update(this.x - this.img.width / 2, this.y);
+        }
+        this.updateCounter++;
     }
 
     left() {

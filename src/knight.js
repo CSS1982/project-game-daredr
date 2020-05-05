@@ -23,6 +23,8 @@ class Knight {
     this.imgAttack = null;
     this.imgAttackLeft = null;
     this.row = 0;
+    this.animationSpeed = 2;
+    this.updateCounter = 0;
   }
 
   inicialize() {
@@ -55,14 +57,14 @@ class Knight {
       this.speedY -= 75;
       this.jump = false;
     }
-    this.speedY +=1;
-    if(this.direction === "right"){
+    this.speedY += 1;
+    if (this.direction === "right") {
       if (this.speedX > 12) {
         this.speedX = 12;
       }
       this.x += this.speedX;
- 
-    }if(this.direction === "left"){
+    }
+    if (this.direction === "left") {
       if (this.speedX < -12) {
         this.speedX = -12;
       }
@@ -71,6 +73,7 @@ class Knight {
     this.y += this.speedY;
     this.speedY *= 0.95;
     this.speedX *= 0.95;
+ 
 
     enemies.forEach(enemy => {
       if (this.right() > enemy.left() && this.bottom() > enemy.top() && this.right() < enemy.x + 100) {
@@ -111,31 +114,34 @@ class Knight {
   }
 
   update() {
+   if (this.updateCounter % this.animationSpeed) {
 
-    if (this.speedX > -3 && this.speedX < 3 && !this.attack  && this.direction === "right") {
-      this.imgIdle.update(this.x - this.imgIdle.width / 2, this.y, this.direction, this.type);
-    }
+      if (this.speedX > -3 && this.speedX < 3 && !this.attack && this.direction === "right") {
+        this.imgIdle.update(this.x - this.imgIdle.width / 2, this.y);
+      }
 
-    if (this.speedX > -3 && this.speedX < 3 && !this.attack  && this.direction === "left") {
-      this.imgIdleLeft.update(this.x - this.imgIdleLeft.width / 2, this.y, this.direction, this.type);
-    }
+      if (this.speedX > -3 && this.speedX < 3 && !this.attack && this.direction === "left") {
+        this.imgIdleLeft.update(this.x - this.imgIdleLeft.width / 2, this.y);
+      }
 
-    if (this.speedX > 3 && this.direction === "right") {
-      this.imgRun.update(this.x - this.imgIdle.width / 2, this.y, this.direction, this.type);
+      if (this.speedX > 3 && this.direction === "right") {
+        this.imgRun.update(this.x - this.imgIdle.width / 2, this.y);
 
-    }
+      }
 
-    if (this.speedX < -3 && this.direction === "left") {
-      this.imgRunLeft.update(this.x - this.imgIdle.width / 2, this.y, this.direction, this.type);
+      if (this.speedX < -3 && this.direction === "left") {
+        this.imgRunLeft.update(this.x - this.imgIdle.width / 2, this.y);
 
-    }
-    if (this.speedX === 0 && this.attack && this.direction === "right") {
-      this.imgAttack.update(this.x - this.imgIdle.width / 2, this.y, this.direction, this.type);
-    }
-    if (this.speedX === 0 && this.attack && this.direction === "left") {
-      this.imgAttackLeft.update(this.x - this.imgIdle.width / 2, this.y, this.direction, this.type);
-    }
+      }
+      if (this.speedX === 0 && this.attack && this.direction === "right") {
+        this.imgAttack.update(this.x - this.imgIdle.width / 2, this.y);
+      }
+      if (this.speedX === 0 && this.attack && this.direction === "left") {
+        this.imgAttackLeft.update(this.x - this.imgIdle.width / 2, this.y);
+      }
 
+  }
+  this.updateCounter++;
   }
 
   status() {
@@ -151,11 +157,11 @@ class Knight {
   attackEnemy() {
     if (this.attack) {
       var attackValue = Math.floor(Math.random() * 20);
-      if (attackValue < 5) {
+      if (attackValue < 10) {
         return 0;
-      } else if (attackValue < 12) {
+      } else if (attackValue < 14) {
         return 2;
-      } else if (attackValue < 15) {
+      } else if (attackValue < 16) {
         return 4;
       } else if (attackValue < 18) {
         return 5;

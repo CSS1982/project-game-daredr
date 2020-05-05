@@ -83,7 +83,7 @@ const main = () => {
                         game.knight.jump = true;
                     }
                     break;
-                case 75: // k
+                case 75: // kill - k
                     game.knight.speedX = 0;
                     game.knight.attack = true;
                     break;

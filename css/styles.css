@@ -38,7 +38,7 @@ h1 {
 .container {
 
   text-align: center;
-  flex-direction: column;
+  flex-direction: row;
   margin-right: auto;
   margin-left: auto;
 
@@ -60,4 +60,11 @@ h1 {
 
 
   
+}
+
+selection-buttons {
+  display: flex;
+  flex-direction: column;
+  justify-content: "space-between";
+
 }

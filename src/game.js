@@ -11,9 +11,11 @@ class Game {
         this.y = 0;
         this.width = 0;
         this.height = 0;
-        this.encounter = 10;
+        this.encounter = 5;
         this.frames = 0;
         this.fireballs = [];
+        this.mode = undefined; //Possible values: "easy", "medium", "hard", "endless"
+        this.simultaneousEnemies = 2;
     }
 
     startLoop() {
@@ -21,10 +23,30 @@ class Game {
         this.inicialize();
         this.knight.inicialize();
 
+       /* switch (mode) {
+            case "easy":
+                this.simultaneousEnemies = 2;
+                this.encounter = 3;
+                break;
+            case "medium":
+                this.simultaneousEnemies = 3;
+                this.encounter = 5;
+                break;
+            case "hard":
+                this.simultaneousEnemies = 3;
+                this.encounter = 10;
+                break;
+            case "endless":
+                this.simultaneousEnemies = 3;
+                this.encounter = 100;
+                break;
+
+        }*/
+
 
 
         const loop = () => {
-            if (this.enemies.length <= 1) {
+            if (this.enemies.length <= this.simultaneousEnemies) {
                 if (this.encounter > 0) {
                     if (Math.floor(Math.random() > 0.97)) {
                         var dice = 0;
@@ -93,63 +115,63 @@ class Game {
             }
             if ((this.knight.attack && this.knight.right() > this.enemies[i].left() && this.knight.left() < this.enemies[i].left() && this.knight.direction === "right") ||
                 (this.knight.attack && this.knight.left() > this.enemies[i].right() && this.knight.right() > this.enemies[i].right() && this.knight.direction === "left")) //check for attack left
-                {
-                    this.enemies[i].receiveDamage(this.knight.attackEnemy());
-                    if (this.enemies[i].health <= 0 || this.enemies[i].x < 0) {
-                        this.enemies.splice(i, 1);
-                        this.knight.points++;
-                        if (this.enemies.length === 0 && this.encounter === 0) {
-                            this.isGameFinished = true;
-                            this.onGameFinished();
-                        }
+            {
+                this.enemies[i].receiveDamage(this.knight.attackEnemy());
+                if (this.enemies[i].health <= 0 || this.enemies[i].x < 0) {
+                    this.enemies.splice(i, 1);
+                    this.knight.points++;
+                    if (this.enemies.length === 0 && this.encounter === 0) {
+                        this.isGameFinished = true;
+                        this.onGameFinished();
                     }
-
-                } else {
-                    this.enemies[i].update();
                 }
-            }
 
-            for (let i = 0; i < this.fireballs.length; i++) {
-                this.fireballs[i].x -= 1;
-                if (this.fireballs[i].health <= 0 || this.fireballs[i].x < 0) {
-                    this.fireballs.splice(i, 1);
-                } else {
-                    this.fireballs[i].update();
-                }
+            } else {
+                this.enemies[i].update();
             }
         }
 
-        checkAllAttacks() {
-            this.enemies.some((enemy, index) => {
-                if (enemy.type === "disciple") {
-                    if (enemy.summonFireball()) {
-                        if (this.fireballs.length <= 2) {
-                            console.log("in");
-                            this.fireballs.push(new Fireball(this.canvas, this.knight, enemy.x, enemy.y));
-                            this.fireballs[this.fireballs.length - 1].inicialize();
-                        }
-                    }
-                }
-                this.knight.loseArmor(enemy.kill());
-                if (this.knight.armorLevel <= 0) {
-                    this.isGameOver = true;
-                    this.onGameOver();
-                }
-            });
-            this.fireballs.some((fireball, index) => {
-                this.knight.loseArmor(fireball.kill());
-                if (this.knight.armorLevel <= 0) {
-                    this.isGameOver = true;
-                    this.onGameOver();
-                }
-            });
-        }
-
-        gameOverCallback(callback) {
-            this.onGameOver = callback;
-        }
-
-        gameFinishedCallback(callback) {
-            this.onGameFinished = callback;
+        for (let i = 0; i < this.fireballs.length; i++) {
+            this.fireballs[i].x -= 1;
+            if (this.fireballs[i].health <= 0 || this.fireballs[i].x < 0) {
+                this.fireballs.splice(i, 1);
+            } else {
+                this.fireballs[i].update();
+            }
         }
     }
+
+    checkAllAttacks() {
+        this.enemies.some((enemy, index) => {
+            if (enemy.type === "disciple") {
+                if (enemy.summonFireball()) {
+                    if (this.fireballs.length <= 2) {
+                        console.log("in");
+                        this.fireballs.push(new Fireball(this.canvas, this.knight, enemy.x, enemy.y));
+                        this.fireballs[this.fireballs.length - 1].inicialize();
+                    }
+                }
+            }
+            this.knight.loseArmor(enemy.kill());
+            if (this.knight.armorLevel <= 0) {
+                this.isGameOver = true;
+                this.onGameOver();
+            }
+        });
+        this.fireballs.some((fireball, index) => {
+            this.knight.loseArmor(fireball.kill());
+            if (this.knight.armorLevel <= 0) {
+                this.isGameOver = true;
+                this.onGameOver();
+            }
+        });
+    }
+
+    gameOverCallback(callback) {
+        this.onGameOver = callback;
+    }
+
+    gameFinishedCallback(callback) {
+        this.onGameFinished = callback;
+    }
+}

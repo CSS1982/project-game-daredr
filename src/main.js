@@ -17,7 +17,7 @@ const main = () => {
         />
       </div>
       <div>
-        <button class="w3-animate-fading game-button">START GAME</button>
+        <button class="w3-animate-fading game-button">START GAME </button>
       </div>
         </section>
         `);
@@ -79,9 +79,9 @@ const main = () => {
                     game.knight.direction = "right";
                     break;
                 case 87: // up arrow-w
-                if(game.knight.y === game.height - game.knight.height){
-                    game.knight.jump = true;
-                }
+                    if (game.knight.y === game.height - game.knight.height) {
+                        game.knight.jump = true;
+                    }
                     break;
                 case 75: // k
                     game.knight.speedX = 0;

@@ -11,7 +11,7 @@ class Disciple extends Enemy {
         this.x -= this.knight.speedX;
     }
     summonFireball() {
-        if (Math.floor(Math.random() * 100) > 99) {
+        if (Math.floor(Math.random() * 100) > 97) {
             return 1;
         } else {
             return 0;

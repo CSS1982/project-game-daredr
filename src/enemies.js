@@ -31,7 +31,9 @@ class Enemy {
         this.width = this.widthOfUnit * this.height / this.heightOfImage;
         this.img = new imageG(this.ctx, this.source, this.imageWidth, this.imageHeight, this.height, this.totalNumberOfFrames, this.numberOfRows, this.row);
         this.img.inicialize();
-        this.x = this.img.width / 2 + this.canvas.width;
+        if (this.x === undefined){
+            this.x = this.img.width / 2 + this.canvas.width;
+        }
         this.y = this.canvas.height - this.img.height;
         this.width = this.img.width;
         this.img.update(this.x - this.img.width / 2, this.y, this.direction, this.type);
@@ -42,7 +44,6 @@ class Enemy {
         if (this.knight.right() > this.x && this.knight.left() < this.left()) {
             this.speedX = 0;
         }
-        this.x -= this.knight.speedX;
         this.img.update(this.x - this.img.width / 2, this.y, this.direction, this.type);
     }
 

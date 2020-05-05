@@ -11,7 +11,7 @@ class Game {
         this.y = 0;
         this.width = 0;
         this.height = 0;
-        this.encounter = 3;
+        this.encounter = 10;
         this.frames = 0;
         this.fireballs = [];
     }
@@ -20,25 +20,29 @@ class Game {
         this.knight = new Knight(this.canvas, 100);
         this.inicialize();
         this.knight.inicialize();
-        var dice = 0;
+
 
 
         const loop = () => {
             if (this.enemies.length <= 2) {
-                if (this.encounter === 0) {
-                    this.isGameFinished = true;
-                    this.onGameFinished();
-                }
-                dice = Math.floor(Math.random() * 6);
-                if (dice < 3) {
-                    this.enemies.push(new Hellhound(this.canvas, this.knight));
-                    this.enemies[this.enemies.length - 1].inicialize();
-                } else if (dice < 5) {
-                    this.enemies.push(new Skeleton(this.canvas, this.knight));
-                    this.enemies[this.enemies.length - 1].inicialize();
-                } else {
-                    this.enemies.push(new Disciple(this.canvas, this.knight));
-                    this.enemies[this.enemies.length - 1].inicialize();
+                if (this.encounter > 0) {
+                    if (Math.floor(Math.random() > 0.97)) {
+                        var dice = 0;
+                        dice = Math.floor(Math.random() * 6);
+                        if (dice < 3) {
+                            this.enemies.push(new Hellhound(this.canvas, this.knight));
+                            this.enemies[this.enemies.length - 1].inicialize();
+                            this.encounter--;
+                        } else if (dice < 5) {
+                            this.enemies.push(new Skeleton(this.canvas, this.knight));
+                            this.enemies[this.enemies.length - 1].inicialize();
+                            this.encounter--;
+                        } else {
+                            this.enemies.push(new Disciple(this.canvas, this.knight));
+                            this.enemies[this.enemies.length - 1].inicialize();
+                            this.encounter--;
+                        }
+                    }
                 }
             }
             this.update();
@@ -46,7 +50,7 @@ class Game {
             this.knight.update();
             this.knight.status();
             this.updateEnemies();
-            this.checkAllCollisions();
+            this.checkAllAttacks();
             if (!this.isGameOver && !this.isGameFinished) {
                 window.requestAnimationFrame(loop);
             }
@@ -56,8 +60,6 @@ class Game {
         window.requestAnimationFrame(loop);
     }
 
-
-
     inicialize() {
         this.width = this.canvas.width;
         this.height = this.canvas.height;
@@ -65,7 +67,6 @@ class Game {
         this.img.src = "img/dark-forest-background.jpg";
         this.img.onload = () => this.ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
     }
-
 
     update() {
         this.width = this.img.width;
@@ -86,10 +87,13 @@ class Game {
             }
             if (this.knight.attack && this.knight.right() > this.enemies[i].left() && this.knight.left() < this.enemies[i].left()) {
                 this.enemies[i].receiveDamage(this.knight.attackEnemy());
-                if (this.enemies[i].health <= 0) {
+                if (this.enemies[i].health <= 0 || this.enemies[i].x < 0) {
                     this.enemies.splice(i, 1);
                     this.knight.points++;
-                    this.encounter--;
+                    if (this.enemies.length === 0 && this.encounter === 0) {
+                        this.isGameFinished = true;
+                        this.onGameFinished();
+                    }
                 }
 
             } else {
@@ -107,28 +111,23 @@ class Game {
         }
     }
 
-
-
-
-    checkAllCollisions() {
+    checkAllAttacks() {
         this.enemies.some((enemy, index) => {
             if (enemy.type === "disciple") {
                 if (enemy.summonFireball()) {
                     if (this.fireballs.length <= 3) {
+                        console.log("in");
                         this.fireballs.push(new Fireball(this.canvas, this.knight, enemy.x, enemy.y));
                         this.fireballs[this.fireballs.length - 1].inicialize();
                     }
                 }
-
             }
             this.knight.loseArmor(enemy.kill());
             if (this.knight.armorLevel <= 0) {
-
                 this.isGameOver = true;
                 this.onGameOver();
             }
         });
-
         this.fireballs.some((fireball, index) => {
             this.knight.loseArmor(fireball.kill());
             if (this.knight.armorLevel <= 0) {

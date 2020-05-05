@@ -15,6 +15,7 @@ class imageG {
         this.x=0;
         this.y=0;
         this.row = row;
+
     }
     inicialize() {
     this.img = new Image();
@@ -24,27 +25,19 @@ class imageG {
     this.width = this.widthOfUnit * this.height / this.heightOfUnit;
     }
     update(x,y,direction,type) {
+       
         this.imageFrameNumber++;
+
         this.x = x;
         this.y = y;
         this.imageFrameNumber = this.imageFrameNumber % this.totalNumberOfFrames;
-        /*console.log(direction);
-        if (direction === "left" && type === "knight"){
-            console.log("reverse");
-            this.ctx.save();
-            this.ctx.scale(-1,1);
-            this.ctx.drawImage(this.img, this.imageFrameNumber * this.widthOfUnit, this.heightOfUnit*this.row, // x and y - where in the sprite
-                this.widthOfUnit, this.heightOfUnit, // width and height
-                this.x, this.y, // x and y - where on the screen
-                this.width, this.height // width and height
-              ); 
-              this.ctx.restore();
-        }*/
         this.ctx.drawImage(this.img, this.imageFrameNumber * this.widthOfUnit, this.heightOfUnit*this.row, // x and y - where in the sprite
         this.widthOfUnit, this.heightOfUnit, // width and height
         this.x, this.y, // x and y - where on the screen
         this.width, this.height // width and height
-      );}
+      );
+
+        }
 
 
 }

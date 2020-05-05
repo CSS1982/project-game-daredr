@@ -1,6 +1,6 @@
 class Fireball extends Enemy {
     constructor(canvas, knight, x, y) {
-        super(canvas, knight, "fireball","img/mage-bullet-13x13.png",5, 1, 0, 65, 13, 80, 1, knight.armorLevelStart * 0.09, x, y);
+        super(canvas, knight, "fireball","img/mage-bullet-13x13.png",5, 1, 0, 65, 13, 80, 1, knight.armorLevelStart * 0.009, x, y);
     }
 
     update() {

@@ -79,7 +79,9 @@ const main = () => {
                     game.knight.direction = "right";
                     break;
                 case 87: // up arrow-w
-                game.knight.jump = true;
+                if(game.knight.y === game.height - game.knight.height){
+                    game.knight.jump = true;
+                }
                     break;
                 case 75: // k
                     game.knight.speedX = 0;

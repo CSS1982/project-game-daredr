@@ -1,6 +1,6 @@
-class Hellhound extends Enemy {
+class Mushroom extends Enemy {
     constructor(canvas, knight,x,y) {
-        super(canvas, knight, "hellhound", "img/hell-hound-walk.png", 5, 1, 0, 335, 32, 200, 15, knight.armorLevelStart * 0.09);
+        super(canvas, knight, "hellhound", "img/Mushroom left.png", 8, 1, 0, 1200, 43, 200, 15, knight.armorLevelStart * 0.09);
     }
 
     update(){

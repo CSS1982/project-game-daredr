@@ -52,10 +52,10 @@ class Knight {
   newPos(enemies) {
 
     if (this.jump) {
-      this.speedY += 150 * -1;
+      this.speedY -= 75;
       this.jump = false;
     }
-    this.speedY += 2;
+    this.speedY +=1;
     if(this.direction === "right"){
       if (this.speedX > 12) {
         this.speedX = 12;
@@ -69,8 +69,8 @@ class Knight {
       this.x -= this.speedX;
     }
     this.y += this.speedY;
+    this.speedY *= 0.95;
     this.speedX *= 0.95;
-    this.speedY *= 0.8;
 
     enemies.forEach(enemy => {
       if (this.right() > enemy.left() && this.bottom() > enemy.top() && this.right() < enemy.x + 100) {
@@ -81,9 +81,6 @@ class Knight {
 
     if (this.y >= this.canvas.height - this.height) {
       this.y = this.canvas.height - this.height;
-    }
-    if (this.y < this.canvas.height - 2 * this.height) {
-      this.speedY  += 2;
     }
     if (this.x >= this.canvas.width / 2 - this.imgIdle.width / 4) {
       this.x = this.canvas.width / 2 - this.imgIdle.width / 4;
@@ -149,24 +146,6 @@ class Knight {
     this.ctx.fillRect(this.canvas.width - 350, 80, this.armorLevel * 150 / this.armorLevelStart, 20);
 
   }
-
- /* checkCollisionEnemy(enemy) {
-    if ((this.bottom() < enemy.top() - 1)) {
-      return "bottom";
-    } else if ((this.top() > enemy.bottom() + 1)) {
-      return "top";
-    } else if ((this.right() < enemy.left() - 1)) {
-      return "right";
-    } else if ((this.left() > enemy.right() + 1)) {
-      return "left";
-    }
-    return !(
-      this.bottom() < enemy.top() - 1 ||
-      this.top() > enemy.bottom() + 1 ||
-      this.right() < enemy.left() - 1 ||
-      this.left() > enemy.right() + 1
-    );
-  }*/
 
 
   attackEnemy() {

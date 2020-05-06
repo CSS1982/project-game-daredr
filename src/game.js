@@ -50,8 +50,8 @@ class Game {
                 if (this.encounter > 0) {
                     if (Math.floor(Math.random() > 0.97)) {
                         var dice = 0;
-                        dice = Math.floor(Math.random() * 6);
-                        if (dice < 3) {
+                        dice = Math.floor(Math.random() * 10);
+                        if (dice < 2) {
                             this.enemies.push(new Mushroom(this.canvas, this.knight));
                             this.enemies[this.enemies.length - 1].inicialize();
                             this.encounter--;
@@ -59,7 +59,11 @@ class Game {
                             this.enemies.push(new Skeleton(this.canvas, this.knight));
                             this.enemies[this.enemies.length - 1].inicialize();
                             this.encounter--;
-                        } else {
+                        } else if (dice < 7) {
+                            this.enemies.push(new EvilEye (this.canvas, this.knight));
+                            this.enemies[this.enemies.length - 1].inicialize();
+                            this.encounter--;
+                        }else if (dice < 8) {
                             this.enemies.push(new Disciple(this.canvas, this.knight));
                             this.enemies[this.enemies.length - 1].inicialize();
                             this.encounter--;
@@ -145,8 +149,15 @@ class Game {
         this.enemies.some((enemy) => {
             if (enemy.type === "disciple") {
                 if (enemy.summonFireball()) {
-                    if (this.fireballs.length <= 2) {
-                        this.fireballs.push(new Fireball(this.canvas, this.knight, enemy.x));
+                    if (this.fireballs.length <= 4) {
+                        this.fireballs.push(new Fireball(this.canvas, this.knight, enemy.x, enemy.y));
+                        this.fireballs[this.fireballs.length - 1].inicialize();
+                    }
+                }
+            }else if (enemy.type === "evileye") {
+                if (enemy.summonFireball()) {
+                    if (this.fireballs.length <= 4) {
+                        this.fireballs.push(new Fireball(this.canvas, this.knight, enemy.x, enemy.y));
                         this.fireballs[this.fireballs.length - 1].inicialize();
                     }
                 }

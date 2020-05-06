@@ -36,7 +36,10 @@ class Enemy {
         if (this.x === undefined) {
             this.x = this.img.width / 2 + this.canvas.width;
         }
-        this.y = this.canvas.height - this.img.height;
+        if (this.y === undefined) {
+            this.y = this.canvas.height - this.img.height;
+        }
+ 
         this.width = this.img.width;
         this.img.update(this.x - this.img.width / 2, this.y, this.direction, this.type);
 

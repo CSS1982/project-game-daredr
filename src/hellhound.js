@@ -1,17 +1,17 @@
 class Hellhound extends Enemy {
-    constructor(canvas, knight,x,y) {
-        super(canvas, knight, "hellhound", "img/hell-hound-walk.png", 5, 1, 0, 335, 32, 200, 15, knight.armorLevelStart * 0.09);
+    constructor(canvas, knight) {
+        super(canvas, knight, "hellhound", "img/hell-hound-run.png", 5, 1, 0, 335, 32, 200, 20, 5, undefined, undefined,200);
     }
 
     update(){
         super.update();
-        this.x -= 1.5 + this.knight.speedX;
+        this.x -= 2 + this.knight.speedX;
     }
 
     kill() {
         if (this.knight.right() > this.left() && this.knight.right() < this.right() && this.knight.bottom() > this.y ) {
-            if (Math.floor(Math.random() * 100) > 96) {
-                return this.strength;
+            if (Math.floor(Math.random() * 100) > 94) {
+                return Math.floor(Math.random() * this.strength);
             } else {
                 return 0;
             }

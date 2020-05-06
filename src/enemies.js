@@ -34,12 +34,13 @@ class Enemy {
         this.img = new imageG(this.ctx, this.source, this.imageWidth, this.imageHeight, this.height, this.totalNumberOfFrames, this.numberOfRows, this.row);
         this.img.inicialize();
         if (this.x === undefined) {
+
             this.x = this.img.width / 2 + this.canvas.width;
         }
         if (this.y === undefined) {
             this.y = this.canvas.height - this.img.height;
         }
- 
+
         this.width = this.img.width;
         this.img.update(this.x - this.img.width / 2, this.y, this.direction, this.type);
 

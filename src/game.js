@@ -1,5 +1,5 @@
 class Game {
-    constructor(canvas) {
+    constructor(canvas, mode) {
         this.canvas = canvas;
         this.ctx = this.canvas.getContext("2d");
         this.knight = null;
@@ -11,59 +11,61 @@ class Game {
         this.y = 0;
         this.width = 0;
         this.height = 0;
-        this.encounter = 10;
+        this.encounter = null;
         this.frames = 0;
         this.fireballs = [];
-        this.mode = undefined; //Possible values: "easy", "medium", "hard", "endless"
-        this.simultaneousEnemies = 2;
+        this.mode = mode; //Possible values: "easy", "medium", "hard", "endless"
+        this.simultaneousEnemies = null;
+        this.dice = null;
+        this.diceFaces = null;
     }
-
-    startLoop() {
-        this.knight = new Knight(this.canvas, 100);
-        this.inicialize();
-        this.knight.inicialize();
-
-       /* switch (mode) {
+    setMode() {
+        console.log(this.mode);
+        switch (this.mode) {
             case "easy":
                 this.simultaneousEnemies = 2;
-                this.encounter = 3;
+                this.encounter = 10;
+                this.diceFaces = 6;
                 break;
             case "medium":
                 this.simultaneousEnemies = 3;
-                this.encounter = 5;
+                this.encounter = 20;
+                this.diceFaces = 10;
                 break;
             case "hard":
-                this.simultaneousEnemies = 3;
-                this.encounter = 10;
-                break;
-            case "endless":
-                this.simultaneousEnemies = 3;
-                this.encounter = 100;
+                this.simultaneousEnemies = 4;
+                this.encounter = 30;
+                this.diceFaces = 15;
                 break;
 
-        }*/
+        }
+    }
 
+    startLoop() {
+        this.setMode();
+        this.knight = new Knight(this.canvas, 100);
+        this.inicialize();
+        this.knight.inicialize();
 
 
         const loop = () => {
             if (this.enemies.length <= this.simultaneousEnemies) {
                 if (this.encounter > 0) {
-                    if (Math.floor(Math.random() > 0.97)) {
-                        var dice = 0;
-                        dice = Math.floor(Math.random() * 10);
-                        if (dice < 2) {
+                    if (Math.floor(Math.random() > 0.97)) {                        
+                        this.dice = Math.floor(Math.random() * this.diceFaces);
+                        if (this.dice < 3) {
                             this.enemies.push(new Mushroom(this.canvas, this.knight));
                             this.enemies[this.enemies.length - 1].inicialize();
                             this.encounter--;
-                        } else if (dice < 5) {
+                        } else if (this.dice < 5) {
                             this.enemies.push(new Skeleton(this.canvas, this.knight));
                             this.enemies[this.enemies.length - 1].inicialize();
                             this.encounter--;
-                        } else if (dice < 7) {
-                            this.enemies.push(new EvilEye (this.canvas, this.knight));
+                        } else if (this.dice < 8) {
+                            this.enemies.push(new EvilEye(this.canvas, this.knight));
                             this.enemies[this.enemies.length - 1].inicialize();
                             this.encounter--;
-                        }else if (dice < 8) {
+                        } else if (this.dice < 12) {
                             this.enemies.push(new Disciple(this.canvas, this.knight));
                             this.enemies[this.enemies.length - 1].inicialize();
                             this.encounter--;
@@ -117,9 +119,7 @@ class Game {
             } else {
                 this.enemies[i].x -= 0;
             }
-            if ((this.knight.attack && this.knight.right() > this.enemies[i].left() && this.knight.left() < this.enemies[i].left() && this.knight.direction === "right") ||
-                (this.knight.attack && this.knight.left() > this.enemies[i].right() && this.knight.right() > this.enemies[i].right() && this.knight.direction === "left")) //check for attack left
-            {
+            if (this.knight.checkRightAttack(this.enemies[i]) || this.knight.checkLeftAttack(this.enemies[i])) {
                 this.enemies[i].receiveDamage(this.knight.attackEnemy());
                 if (this.enemies[i].health <= 0 || this.enemies[i].x < 0) {
                     this.enemies.splice(i, 1);
@@ -147,14 +147,7 @@ class Game {
 
     checkAllAttacks() {
         this.enemies.some((enemy) => {
-            if (enemy.type === "disciple") {
-                if (enemy.summonFireball()) {
-                    if (this.fireballs.length <= 4) {
-                        this.fireballs.push(new Fireball(this.canvas, this.knight, enemy.x, enemy.y));
-                        this.fireballs[this.fireballs.length - 1].inicialize();
-                    }
-                }
-            }else if (enemy.type === "evileye") {
+            if (enemy.type === "disciple" || enemy.type === "evileye") {
                 if (enemy.summonFireball()) {
                     if (this.fireballs.length <= 4) {
                         this.fireballs.push(new Fireball(this.canvas, this.knight, enemy.x, enemy.y));

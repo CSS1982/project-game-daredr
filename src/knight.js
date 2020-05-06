@@ -23,8 +23,8 @@ class Knight {
     this.imgAttack = null;
     this.imgAttackLeft = null;
     this.row = 0;
-    this.animationSpeed = 2;
-    this.updateCounter = 0;
+    //this.animationSpeed = 1;
+    //this.updateCounter = 0;
   }
 
   inicialize() {
@@ -73,7 +73,7 @@ class Knight {
     this.y += this.speedY;
     this.speedY *= 0.95;
     this.speedX *= 0.95;
- 
+
 
     enemies.forEach(enemy => {
       if (this.right() > enemy.left() && this.bottom() > enemy.top() && this.right() < enemy.x + 100) {
@@ -114,34 +114,34 @@ class Knight {
   }
 
   update() {
-   if (this.updateCounter % this.animationSpeed) {
+    // if (Number.isInteger(this.updateCounter / this.animationSpeed)) {
 
-      if (this.speedX > -3 && this.speedX < 3 && !this.attack && this.direction === "right") {
-        this.imgIdle.update(this.x - this.imgIdle.width / 2, this.y);
-      }
+    if (this.speedX > -3 && this.speedX < 3 && !this.attack && this.direction === "right") {
+      this.imgIdle.update(this.x - this.imgIdle.width / 2, this.y);
+    }
 
-      if (this.speedX > -3 && this.speedX < 3 && !this.attack && this.direction === "left") {
-        this.imgIdleLeft.update(this.x - this.imgIdleLeft.width / 2, this.y);
-      }
+    if (this.speedX > -3 && this.speedX < 3 && !this.attack && this.direction === "left") {
+      this.imgIdleLeft.update(this.x - this.imgIdleLeft.width / 2, this.y);
+    }
 
-      if (this.speedX > 3 && this.direction === "right") {
-        this.imgRun.update(this.x - this.imgIdle.width / 2, this.y);
+    if (this.speedX > 3 && this.direction === "right") {
+      this.imgRun.update(this.x - this.imgIdle.width / 2, this.y);
 
-      }
+    }
 
-      if (this.speedX < -3 && this.direction === "left") {
-        this.imgRunLeft.update(this.x - this.imgIdle.width / 2, this.y);
+    if (this.speedX < -3 && this.direction === "left") {
+      this.imgRunLeft.update(this.x - this.imgIdle.width / 2, this.y);
 
-      }
-      if (this.speedX === 0 && this.attack && this.direction === "right") {
-        this.imgAttack.update(this.x - this.imgIdle.width / 2, this.y);
-      }
-      if (this.speedX === 0 && this.attack && this.direction === "left") {
-        this.imgAttackLeft.update(this.x - this.imgIdle.width / 2, this.y);
-      }
+    }
+    if (this.speedX === 0 && this.attack && this.direction === "right") {
+      this.imgAttack.update(this.x - this.imgIdle.width / 2, this.y);
+    }
+    if (this.speedX === 0 && this.attack && this.direction === "left") {
+      this.imgAttackLeft.update(this.x - this.imgIdle.width / 2, this.y);
+    }
 
-  }
-  this.updateCounter++;
+    // }
+    // this.updateCounter++;
   }
 
   status() {
@@ -152,6 +152,16 @@ class Knight {
     this.ctx.fillRect(this.canvas.width - 350, 80, this.armorLevel * 150 / this.armorLevelStart, 20);
 
   }
+
+  checkRightAttack(enemy) {
+
+    return (this.attack && this.right() > enemy.left() && this.left() <= enemy.left() && this.direction === "right" && this.top() < enemy.bottom()*0.7);
+  }
+  checkLeftAttack(enemy) {
+
+    return (this.attack && this.right() >= enemy.right() && this.direction === "left" && this.top() < enemy.bottom()*0.7);
+  }
+
 
 
   attackEnemy() {
@@ -171,6 +181,7 @@ class Knight {
 
     }
   }
+
 
   loseArmor(damage) {
     if (this.armorLevel > 0) {

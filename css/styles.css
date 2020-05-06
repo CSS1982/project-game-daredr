@@ -5,16 +5,17 @@
   color: rgb(0, 0, 0);
   font-family: 'Creepster', cursive;
   padding: 20px 40px;
-  font-size: 30px;
+  margin-bottom: 10px;
+  font-size: 25px;
   border-radius: 5px;
 }
 
 
 html,
 body {
- /*width: 100vw;
+  /*width: 100vw;
   /height: 90vh;*/
-  margin: 0;
+  /*margin: 0;*/
   background-image: url("https://raw.githubusercontent.com/CSS1982/project-game-daredr/master/img/background-forest.jpg");
   background-repeat: no-repeat;
   background-attachment: fixed;
@@ -25,7 +26,7 @@ body {
 }
 
 #logo {
-  width: 40vw;
+  width: 35vw;
   height: auto;
 }
 
@@ -54,17 +55,17 @@ h1 {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
   width: 100vw;
   height: 100vh;
 
 
-  
+
 }
 
 selection-buttons {
   display: flex;
-  flex-direction: column;
-  justify-content: "space-between";
+  flex-direction: row;
+  justify-content: space-between;
 
 }

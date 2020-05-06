@@ -6,7 +6,6 @@ class Fireball extends Enemy {
         super.update();
         this.x -= 4 + this.knight.speedX;
         this.y = this.y * 1.005;
-        console.log(this.y);
         if (this.y > this.canvas.height * 0.75) {
             this.y = this.canvas.height * 0.75;
         }

@@ -8,37 +8,49 @@ const main = () => {
 
     const buildSplashScreen = () => {
         buildDom(`
-        <section class="splash-screen">
-        <div >
+    <section class="splash-screen">
+       <div>
         <img id ="logo"
           src="img/Dare!.png"
           alt="dare image"
           class="game-logo w3-animate-fading"
         />
       </div>
-      <div>
-        <button class="w3-animate-fading game-button">START GAME </button>
+      <div class="selection-buttons">
+        <div>
+            <button class="w3-animate-fading game-button" id="easy">Are you Scared?</button>
+        </div>
+        <div>
+            <button class="w3-animate-fading game-button" id="medium">Bring it On!</button>
+        </div>
+        <div>
+            <button class="w3-animate-fading game-button" id="hard">Hell is Home</button>
+        </div>
       </div>
-        </section>
+    </section>
         `);
-        const startButton = document.querySelector('button');
-        startButton.addEventListener('click', buildGameScreen);
+
+        const startButtonEasy = document.getElementById("easy");
+        startButtonEasy.addEventListener('click', buildGameScreen);
+        const startButtonMedium = document.getElementById("medium");
+        startButtonMedium.addEventListener('click', buildGameScreen);
+        const startButtonHard = document.getElementById("hard");
+        startButtonHard.addEventListener('click', buildGameScreen);
 
     };
-
-    const buildGameScreen = () => {
+    const buildGameScreen = (e) => {
         buildDom(`
             <section class="game-screen" >
                 <canvas ></canvas>
             </section>
             
         `);
-
         const width = document.querySelector('.game-screen').offsetWidth;
         const height = document.querySelector('.game-screen').offsetHeight;
+        const mode = e.target.id;
+        console.log(mode);
 
         var myMusic;
-        var countJump = 0;
 
         function sound(src) {
             this.sound = document.createElement("audio");
@@ -54,14 +66,14 @@ const main = () => {
                 this.sound.pause();
             };
         }
-        myMusic = new sound("snd/2019-10-06_-_Villainous_-_David_Fesliyan.mp3");
+        myMusic = new sound("snd/alexander-nakarada-wrath.mp3");
         myMusic.play();
         const canvasElement = document.querySelector('canvas');
 
         canvasElement.setAttribute('width', width);
         canvasElement.setAttribute('height', height);
 
-        const game = new Game(canvasElement);
+        const game = new Game(canvasElement, mode);
 
         game.gameOverCallback(buildGameOver);
         game.gameFinishedCallback(buildGameFinished);
@@ -99,6 +111,7 @@ const main = () => {
 
     };
 
+
     const buildGameOver = () => {
         buildDom(`
             <section class="splash-screen">
@@ -110,15 +123,13 @@ const main = () => {
             />
           </div>
           <div>
-            <button class="w3-animate-fading game-button">RESTART GAME</button>
+            <button class="w3-animate-fading game-button" id="home">TOO DIFFICULT?</button>
           </div>
             </section>
         `);
 
-        const restartButton = document.querySelector('button');
-        restartButton.setAttribute('id', "restart-game-button");
-
-        restartButton.addEventListener('click', buildGameScreen);
+        const buttonHome = document.getElementById("home");
+        buttonHome.addEventListener('click', buildSplashScreen);
     };
 
     const buildGameFinished = () => {
@@ -132,15 +143,13 @@ const main = () => {
             />
           </div>
           <div>
-            <button class="w3-animate-fading game-button">RESTART GAME</button>
+            <button class="w3-animate-fading game-button" id="home">TOO EASY?</button>
           </div>
             </section>
         `);
 
-        const restartButton = document.querySelector('button');
-        restartButton.setAttribute('id', "restart-game-button");
-
-        restartButton.addEventListener('click', buildGameScreen);
+        const buttonHome = document.getElementById("home");
+        buttonHome.addEventListener('click', buildSplashScreen);
     };
 
     buildSplashScreen();

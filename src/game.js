@@ -18,24 +18,27 @@ class Game {
         this.simultaneousEnemies = null;
         this.dice = null;
         this.diceFaces = null;
+        this.source = null;
     }
     setMode() {
-        console.log(this.mode);
         switch (this.mode) {
             case "easy":
                 this.simultaneousEnemies = 2;
                 this.encounter = 10;
                 this.diceFaces = 6;
+                this.source = "img/dark-forest-background.jpg";
                 break;
             case "medium":
                 this.simultaneousEnemies = 3;
                 this.encounter = 20;
                 this.diceFaces = 10;
+                this.source = "img/background-caverns.jpg";
                 break;
             case "hard":
                 this.simultaneousEnemies = 4;
                 this.encounter = 30;
                 this.diceFaces = 15;
+                this.source = "img/background-cave.jpg";
                 break;
 
         }
@@ -51,7 +54,7 @@ class Game {
         const loop = () => {
             if (this.enemies.length <= this.simultaneousEnemies) {
                 if (this.encounter > 0) {
-                    if (Math.floor(Math.random() > 0.97)) {                        
+                    if (Math.floor(Math.random() > 0.97)) {
                         this.dice = Math.floor(Math.random() * this.diceFaces);
                         if (this.dice < 3) {
                             this.enemies.push(new Mushroom(this.canvas, this.knight));
@@ -92,7 +95,7 @@ class Game {
         this.width = this.canvas.width;
         this.height = this.canvas.height;
         this.img = new Image();
-        this.img.src = "img/dark-forest-background.jpg";
+        this.img.src = this.source;
         this.img.onload = () => this.ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
     }
 
@@ -156,18 +159,14 @@ class Game {
                 }
             }
             this.knight.loseArmor(enemy.kill());
-            if (this.knight.armorLevel <= 0) {
-                this.isGameOver = true;
-                this.onGameOver();
-            }
         });
         this.fireballs.some((fireball) => {
             this.knight.loseArmor(fireball.kill());
-            if (this.knight.armorLevel <= 0) {
-                this.isGameOver = true;
-                this.onGameOver();
-            }
         });
+        if (this.knight.armorLevel <= 0) {
+            this.isGameOver = true;
+            this.onGameOver();
+        }
     }
 
     gameOverCallback(callback) {

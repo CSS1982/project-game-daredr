@@ -48,7 +48,6 @@ const main = () => {
         const width = document.querySelector('.game-screen').offsetWidth;
         const height = document.querySelector('.game-screen').offsetHeight;
         const mode = e.target.id;
-        console.log(mode);
 
         var myMusic;
 

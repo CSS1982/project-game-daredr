@@ -1,30 +1,33 @@
 # Dare! Dragon run
-DARE! is an adventure game with different stages. Prepared to be thrilled!
+DARE! es un juego de aveturas con 3 niveles de dificultad. ¡Atrévete a jugar!
 
 ## Descripción
-Player needs to avoid obstacles and advance because dragon throws fire. After X random generated obstacles and enemies time --> Exit door
+¡Matar a todo bicho que se presente y sobrevivir!
+
 
 ## Reglas del juego 
-- El jugador puede moverse hacia delante 
-- El jugador puede moverse hacia atrás
-- El jugador puede saltar obstáculos
-- Si el jugador choca con obstáculo se para
-- El jugador puede matar enemigos con la espada
-- Si el jugador toca con enemigo:
-  -1a vez pierde escudo
-  -2a vez muere
-- Las llamas van avanzando. Si el jugador toca las llamas muere
+- Juego: 
+  - Acciones jugador: 
+      - Moverse a izquierda y derecha.
+      - Saltar.
+      - Atacar a izquierda y derecha en el suelo o saltando.
+
+  - Condición de Victoria:
+    - El jugador debe acabar con todos los enemigos para acabar el nivel.
+
+- Condición de Derrota:
+  - El jugador muere.
+	
+- Fin de juego:
+  - Vuelta a la página de inicio para seleccionar una nueva dificultad
+
 
 ## MVP - User stories
 
-1. Dragon Run
-    1.1 Player se puede mover con las flechas por el canvas
-    1.2 Obstaculos llegan, número X. Si el usuario toca, muere.
+- Dare!
+  - Player se puede mover con las flechas por el canvas
+  - Obstaculos llegan, número X. Si el usuario toca, muere.
     
     
 ## Backlog -link Trello: https://trello.com/b/gIwSav7J/dare
 
-1. Dragon Run
-    1.2 Obstaculos llegan, número X. Si el usuario toca, se para Y tiempo.
-    1.3 Salida se crea. Si usuario llega a la salida -> Win!
-    1.4 Fuego inicia y avanza. Si toca al jugador muere.

@@ -1,6 +1,6 @@
 class Disciple extends Enemy {
     constructor(canvas, knight) {
-        super(canvas, knight, "disciple", "img/disciple-45x51 mirrored.png", 4, 3, 0, 180, 153, 400, 40, 10, undefined, undefined, 2, 90);
+        super(canvas, knight, "disciple", "img/disciple-45x51 mirrored.png", 4, 3, 0, 180, 153, 2, 400, undefined, undefined, 40, 10, 90);
     }
 
     update() {

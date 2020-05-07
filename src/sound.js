@@ -1,22 +1,9 @@
 var sounds = {
-    /* "dead" : {
-       src : "./sounds/Death.mp3",
-       volume: 1
-     },
-     "init" : {
-       src : "./sounds/Intro.mp3",
-       volume: 1
-     },*/
     "music": {
         src: "snd/alexander-nakarada-wrath.mp3",
         volume: 1,
         loop: true
     }
-    /*,
-        "win" : {
-          src : "./sounds/Fruit.mp3",
-          volume: 1
-        }*/
 };
 
 class Sound {

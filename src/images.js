@@ -25,7 +25,6 @@ class imageG {
     this.width = this.widthOfUnit * this.height / this.heightOfUnit;
   }
   update(x, y) {
-
     this.x = x;
     this.y = y;
     this.imageFrameNumber = this.imageFrameNumber % this.totalNumberOfFrames;

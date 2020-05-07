@@ -1,6 +1,6 @@
 class Fireball extends Enemy {
     constructor(canvas, knight, x, y) {
-        super(canvas, knight, "fireball", "img/mage-bullet-13x13.png", 5, 1, 0, 65, 13, 80, 1, knight.armorLevelStart * 0.009, x, y, 2);
+        super(canvas, knight, "fireball", "img/mage-bullet-13x13.png", 5, 1, 0, 65, 13, 2, 80, x, y, 1, 1);
     }
     update() {
         super.update();
@@ -17,7 +17,6 @@ class Fireball extends Enemy {
 
     kill() {
         if (this.explosionZone()) {
-            console.log("in");
             this.health--;
             return this.strength;
         } else {

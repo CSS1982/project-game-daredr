@@ -1,6 +1,7 @@
 class EvilEye extends Enemy {
     constructor(canvas, knight) {
-        super(canvas, knight, "evileye", "img/EyeAttackleft.png", 8, 1, 0, 1200, 44, 180, 15, 10, undefined, 300, 2,90);
+        // super(canvas, knight, "evileye", "img/EyeAttackleft.png", 8, 1, 0, 1200, 44, 180, 15, 10, undefined, 300, 2,90);
+        super(canvas, knight, "evileye", "img/EyeAttackleft.png", 8, 1, 0, 1200, 44, 2, 180,  undefined, 300, 15, 10, 90);
     }
 
     update() {
@@ -11,7 +12,7 @@ class EvilEye extends Enemy {
         this.x -= this.knight.speedX;
     }
     summonFireball() {
-        if (Math.floor(Math.random() * 100) > 97) {
+        if (Math.floor(Math.random() * 100) > 98) {
             return 1;
         } else {
             return 0;

@@ -61,8 +61,8 @@ class Knight {
     }
     this.speedY += 1;
     if (this.direction === "right") {
-      if (this.speedX > 12) {
-        this.speedX = 12;
+      if (this.speedX > 6) {
+        this.speedX = 6;
       }
       this.x += this.speedX;
     }
@@ -72,8 +72,8 @@ class Knight {
         this.speedX = 0;
         this.x = this.xInitial;
       } else {
-        if (this.speedX < -12) {
-          this.speedX = -12;
+        if (this.speedX < -6) {
+          this.speedX = -6;
         }
         this.x += this.speedX;
       }

@@ -8,6 +8,7 @@ class Knight {
     this.armorLevelStart = armorLevel;
     this.armorLevel = this.armorLevelStart;
     this.x = 0;
+    this.xInitial = null;
     this.y = this.height;
     this.speedX = 0;
     this.speedY = 0;
@@ -32,6 +33,7 @@ class Knight {
     this.imgIdle = new imageG(this.ctx, "img/Idle.png", 1540, 85, this.height, 11, 1, this.row);
     this.imgIdle.inicialize();
     this.x = this.imgIdle.width / 2;
+    this.xInitial = this.x;
     this.width = this.imgIdle.width;
     this.imgIdle.update(this.x - this.imgIdle.width / 2, this.y, this.type);
     this.imgIdleLeft = new imageG(this.ctx, "img/IdleLeft.png", 1540, 85, this.height, 11, 1, this.row);
@@ -65,10 +67,16 @@ class Knight {
       this.x += this.speedX;
     }
     if (this.direction === "left") {
-      if (this.speedX < -12) {
-        this.speedX = -12;
+
+      if (this.x <= this.xInitial) {
+        this.speedX = 0;
+        this.x = this.xInitial;
+      } else {
+        if (this.speedX < -12) {
+          this.speedX = -12;
+        }
+        this.x += this.speedX;
       }
-      this.x -= this.speedX;
     }
     this.y += this.speedY;
     this.speedY *= 0.95;
@@ -88,9 +96,7 @@ class Knight {
     if (this.x >= this.canvas.width / 2 - this.imgIdle.width / 4) {
       this.x = this.canvas.width / 2 - this.imgIdle.width / 4;
     }
-    if (this.x <= -0.10 * this.widthIdle) {
-      this.x = -0.10 * this.imgIdle.width;
-    }
+
 
 
   }
@@ -155,11 +161,11 @@ class Knight {
 
   checkRightAttack(enemy) {
 
-    return (this.attack && this.right() > enemy.left() && this.left() <= enemy.left() && this.direction === "right" && this.top() < enemy.bottom()*0.7);
+    return (this.attack && this.right() > enemy.left() && this.left() <= enemy.left() && this.direction === "right" && this.top() < enemy.bottom() * 0.7);
   }
   checkLeftAttack(enemy) {
 
-    return (this.attack && this.right() >= enemy.right() && this.direction === "left" && this.top() < enemy.bottom()*0.7);
+    return (this.attack && this.right() >= enemy.right() && this.direction === "left" && this.top() < enemy.bottom() * 0.7);
   }
 
 

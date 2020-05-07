@@ -103,7 +103,17 @@ class Game {
         this.width = this.img.width;
         this.ctx.drawImage(this.img, this.x, 0, this.width, this.height);
         this.ctx.drawImage(this.img, this.x - this.width, 0, this.width, this.height);
+
         this.x -= this.knight.speedX;
+
+
+
+
+        if (this.x >= this.img.width) {
+            this.x = 0;
+        }
+
+        
         if (this.x <= 0) {
             this.x = this.img.width;
         }

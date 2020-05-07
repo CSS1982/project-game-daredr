@@ -1,6 +1,6 @@
 //Clase para generar los enemigos
 class Enemy {
-    constructor(canvas, knight, type, source, totalNumberOfFrames, numberofRows, row, imageWidth, imageHeight, height, health, strength, x, y, animationSpeed) {
+    constructor(canvas, knight, type, source, totalNumberOfFrames, numberofRows, row, imageWidth, imageHeight, height, health, strength, x, y, animationSpeed, chance) {
         this.canvas = canvas;
         this.knight = knight;
         this.ctx = this.canvas.getContext("2d");
@@ -25,6 +25,7 @@ class Enemy {
         this.type = type;
         this.animationSpeed = animationSpeed;
         this.updateCounter = 0;
+        this.chance = chance;
     }
 
     inicialize() {
@@ -68,6 +69,17 @@ class Enemy {
     }
     bottom() {
         return this.y + this.height;
+    }
+    killZone() {
+        return this.knight.right() > this.left() && this.knight.right() < this.right() && this.knight.bottom() > this.y;
+    }
+
+    kill() {
+        if (this.killZone() && Math.floor(Math.random() * 100) > this.chance) {
+            return Math.floor(Math.random() * this.strength);
+        } else {
+            return 0;
+        }
     }
 
     receiveDamage(damage) {

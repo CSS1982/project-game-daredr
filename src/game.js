@@ -19,6 +19,8 @@ class Game {
         this.dice = null;
         this.diceFaces = null;
         this.source = null;
+        this.musicGame = new Sound("music");
+        this.musicMuted = false;
     }
     setMode() {
         switch (this.mode) {
@@ -49,6 +51,7 @@ class Game {
         this.knight = new Knight(this.canvas, 100);
         this.inicialize();
         this.knight.inicialize();
+        this.musicGame.play();
 
 
         const loop = () => {
@@ -77,6 +80,7 @@ class Game {
                 }
             }
             this.update();
+            this.gameControls();
             this.knight.newPos(this.enemies);
             this.knight.update();
             this.knight.status();
@@ -103,26 +107,17 @@ class Game {
         this.width = this.img.width;
         this.ctx.drawImage(this.img, this.x, 0, this.width, this.height);
         this.ctx.drawImage(this.img, this.x - this.width, 0, this.width, this.height);
-
         this.x -= this.knight.speedX;
-
-
-
 
         if (this.x >= this.img.width) {
             this.x = 0;
         }
 
-        
+
         if (this.x <= 0) {
             this.x = this.img.width;
         }
-        this.ctx.font = "25px Creepster";
-        this.ctx.fillStyle = "red";
-        this.ctx.fillText("Jump: W", 0, 50);
-        this.ctx.fillText("Right: D", 0, 80);
-        this.ctx.fillText("Left: A", 0, 110);
-        this.ctx.fillText("Attack: K", 0, 140);
+
     }
 
     updateEnemies() {
@@ -138,6 +133,7 @@ class Game {
                     this.enemies.splice(i, 1);
                     this.knight.points++;
                     if (this.enemies.length === 0 && this.encounter === 0) {
+                        this.musicGame.stop();
                         this.isGameFinished = true;
                         this.onGameFinished();
                     }
@@ -174,8 +170,23 @@ class Game {
             this.knight.loseArmor(fireball.kill());
         });
         if (this.knight.armorLevel <= 0) {
+            this.musicGame.stop();
             this.isGameOver = true;
             this.onGameOver();
+        }
+    }
+
+    gameControls() {
+        this.ctx.font = "25px Creepster";
+        this.ctx.fillStyle = "red";
+        this.ctx.fillText("Jump: W", 0, 50);
+        this.ctx.fillText("Right: D", 0, 80);
+        this.ctx.fillText("Left: A", 0, 110);
+        this.ctx.fillText("Attack: K", 0, 140);
+        if (this.musicMuted) {
+            this.ctx.fillText("Unmute: M", 0, 170);
+        } else {
+            this.ctx.fillText("Mute: M", 0, 170);
         }
     }
 

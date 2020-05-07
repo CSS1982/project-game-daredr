@@ -48,25 +48,6 @@ const main = () => {
         const width = document.querySelector('.game-screen').offsetWidth;
         const height = document.querySelector('.game-screen').offsetHeight;
         const mode = e.target.id;
-
-        var myMusic;
-
-        function sound(src) {
-            this.sound = document.createElement("audio");
-            this.sound.src = src;
-            this.sound.setAttribute("preload", "auto");
-            this.sound.setAttribute("controls", "none");
-            this.sound.style.display = "none";
-            document.body.appendChild(this.sound);
-            this.play = function () {
-                this.sound.play();
-            };
-            this.stop = function () {
-                this.sound.pause();
-            };
-        }
-        myMusic = new sound("snd/alexander-nakarada-wrath.mp3");
-        myMusic.play();
         const canvasElement = document.querySelector('canvas');
 
         canvasElement.setAttribute('width', width);
@@ -79,7 +60,7 @@ const main = () => {
 
         game.startLoop();
 
-        const setPlayerDirection = (e) => {
+        const controls = (e) => {
             switch (e.which) {
                 case 65: // left arrow-a
                     game.knight.speedX -= 2;
@@ -98,11 +79,20 @@ const main = () => {
                     game.knight.speedX = 0;
                     game.knight.attack = true;
                     break;
+                case 77: // mute/unmute - m
+                    if (game.musicMuted) {
+                        game.musicMuted = false;
+                        game.musicGame.play();
+                    } else {
+                        game.musicMuted = true;
+                        game.musicGame.stop();
+                    }
+                    break;
             }
 
         };
 
-        document.addEventListener('keydown', setPlayerDirection);
+        document.addEventListener('keydown', controls);
 
         document.onkeyup = function (e) {
             game.knight.attack = false;

@@ -9,10 +9,15 @@ class Fireball extends Enemy {
         if (this.y > this.canvas.height * 0.75) {
             this.y = this.canvas.height * 0.75;
         }
-
     }
+
+    explosionZone() {
+        return (this.knight.x * 0.9 < this.x && this.x < this.knight.x && this.knight.bottom() > this.y && this.knight.top() < this.y);
+    }
+
     kill() {
-        if (this.knight.x * 0.9 < this.x && this.x < this.knight.x && this.knight.bottom() > this.y) {
+        if (this.explosionZone()) {
+            console.log("in");
             this.health--;
             return this.strength;
         } else {

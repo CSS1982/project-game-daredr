@@ -28,21 +28,21 @@ class Game {
         switch (this.mode) {
             case "easy":
                 this.simultaneousEnemies = 2;
-                this.encounter = 10;
+                this.encounter = 15;
                 this.diceFaces = 8;
                 this.armorLevel = 100;
                 this.source = "img/dark-forest-background.jpg";
                 break;
             case "medium":
                 this.simultaneousEnemies = 3;
-                this.encounter = 20;
+                this.encounter = 30;
                 this.diceFaces = 12;
                 this.armorLevel = 250;
                 this.source = "img/background-caverns.jpg";
                 break;
             case "hard":
                 this.simultaneousEnemies = 4;
-                this.encounter = 30;
+                this.encounter = 50;
                 this.diceFaces = 13;
                 this.armorLevel = 400;
                 this.source = "img/background-cave.jpg";
